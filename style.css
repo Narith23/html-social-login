@@ -9,10 +9,10 @@
 body {
     font-family: 'Outfit', sans-serif;
     background: #0f172a;
-    background-image: 
-        radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-        radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-        radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+    background-image:
+        radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
     background-attachment: fixed;
     min-height: 100vh;
     display: flex;
@@ -68,6 +68,38 @@ body {
     filter: brightness(1.1);
 }
 
+/* Token Display CSS */
+.token-container {
+    max-height: 150px;
+    overflow-y: auto;
+    font-family: 'Monaco', 'Consolas', monospace;
+    word-break: break-all;
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+.token-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.token-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.token-container::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.decoded-info .bg-light {
+    background-color: #f8fafc !important;
+    border-color: #f1f5f9 !important;
+}
+
 .social-btn {
     border-radius: 14px;
     padding: 12px;
@@ -90,18 +122,37 @@ body {
 
 /* Animations */
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes bounce {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 .fade-in {

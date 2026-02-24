@@ -67,8 +67,69 @@ function renderGoogleButton() {
 
 function handleGoogleResponse(response) {
     console.log("GSI ID Token received");
-    performSocialLogin('google', response.credential);
+    displayTokenResponse(response.credential);
 }
+
+function parseJwt(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error("JWT Parsing failed:", e);
+        return null;
+    }
+}
+
+function displayTokenResponse(idToken) {
+    const card = document.querySelector('.login-card');
+    const decoded = parseJwt(idToken);
+
+    card.innerHTML = `
+        <div class="text-center mb-4 fade-in">
+            <div class="mb-3">
+                <i class="bi bi-shield-check text-success" style="font-size: 3rem;"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Google Token Received</h3>
+            <p class="text-muted small">The token was not sent to the API.</p>
+        </div>
+
+        <div class="decoded-info mb-4">
+            <h6 class="fw-bold text-uppercase small text-muted mb-3">User Profile (Decoded)</h6>
+            <div class="d-flex align-items-center p-3 bg-light rounded-3 mb-3 border">
+                ${decoded?.picture ? `<img src="${decoded.picture}" class="rounded-circle me-3" width="48" height="48" alt="Profile">` : '<i class="bi bi-person-circle me-3" style="font-size: 2.5rem;"></i>'}
+                <div class="text-start">
+                    <div class="fw-600">${decoded?.name || 'Unknown Name'}</div>
+                    <div class="text-muted small">${decoded?.email || 'No email provided'}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="token-well mb-4">
+            <h6 class="fw-bold text-uppercase small text-muted mb-2">Raw ID Token</h6>
+            <div class="token-container p-3 rounded-3 border bg-dark text-white position-relative">
+                <code class="small text-break">${idToken}</code>
+                <button class="btn btn-sm btn-outline-light position-absolute top-0 end-0 m-2" onclick="copyToClipboard('${idToken}')">
+                    <i class="bi bi-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="d-grid">
+            <button class="btn btn-primary" onclick="location.reload()">Back to Login</button>
+        </div>
+    `;
+}
+
+window.copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Token copied to clipboard!');
+    });
+};
 
 async function performSocialLogin(provider, idToken) {
     const payload = {
