@@ -1,5 +1,5 @@
 const CONFIG = {
-    GOOGLE_CLIENT_ID: '271243758363-mke96cblrv8j8nm76ivf105uunkk57v3.apps.googleusercontent.com',
+    GOOGLE_CLIENT_ID: '941487744124-q9djn3sbjgumd3trf074mungr39kfm35.apps.googleusercontent.com',
     API_URL: 'http://127.0.0.1:8080/api/v1/cam/auth/social-login',
     DEVICE_DATA: {
         deviceId: "device-uuid-123",
