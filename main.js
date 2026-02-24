@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
-    const googleBtn = document.getElementById('googleLogin');
     const facebookBtn = document.getElementById('facebookLogin');
     const githubBtn = document.getElementById('githubLogin');
 
@@ -18,19 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // Render the official Google button
             const container = document.getElementById('googleBtnContainer');
             if (container) {
-                google.accounts.id.renderButton(
-                    container,
-                    {
-                        theme: "outline",
-                        size: "large",
-                        width: container.offsetWidth,
-                        text: "continue_with",
-                        shape: "rectangular"
-                    }
-                );
+                google.accounts.id.renderButton(container, {
+                    theme: "outline",
+                    size: "large",
+                    width: container.offsetWidth,
+                    text: "continue_with",
+                    shape: "rectangular"
+                });
             }
 
-            // Optional: Enable Google One Tap
+            // Optional: Enable One Tap
             google.accounts.id.prompt();
         } else {
             // Retry if script not loaded yet
@@ -40,17 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initializeGoogleLogin();
 
+    // Handle Google login response
     function handleCredentialResponse(response) {
-        console.log("------------------------------------------");
-        console.log("GOOGLE ID TOKEN RECEIVED:");
-        console.log(response.credential);
-        console.log("------------------------------------------");
+        console.log("GOOGLE ID TOKEN RECEIVED:", response.credential);
         performSocialLogin('google', response.credential);
     }
 
+    // Send token to backend
     async function performSocialLogin(provider, idToken) {
         const deviceData = {
-            deviceId: "device-uuid-123", // Ideally generated or fetched from storage
+            deviceId: "device-uuid-123",
             deviceType: "WEB",
             deviceName: navigator.userAgent,
             latitude: 11.5564,
@@ -59,20 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
             locationLabel: "Phnom Penh, Cambodia"
         };
 
-        const payload = {
-            provider: provider,
-            idToken: idToken,
-            device: deviceData
-        };
+        const payload = { provider, idToken, device: deviceData };
 
         try {
-            console.log(`Sending login request to ${API_URL}...`);
             const response = await fetch(API_URL, {
                 method: 'POST',
-                headers: {
-                    'accept': '*/*',
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json', 'accept': '*/*' },
                 body: JSON.stringify(payload)
             });
 
@@ -90,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Simulated successful UI update
+    // Update UI on successful login
     function onLoginSuccess(provider, data = {}) {
         const card = document.querySelector('.login-card');
         card.innerHTML = `
@@ -99,21 +86,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
                 </div>
                 <h2 class="fw-bold mb-3">Welcome, ${data.name}!</h2>
-                <p class="text-muted mb-4">You have successfully signed in via ${provider.charAt(0).toUpperCase() + provider.slice(1)}.</p>
+                <p class="text-muted mb-4">Signed in via ${provider.charAt(0).toUpperCase() + provider.slice(1)}.</p>
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="mt-3 text-muted small">Session established. Redirecting...</p>
+                <p class="mt-3 text-muted small">Redirecting...</p>
             </div>
         `;
 
         setTimeout(() => {
-            alert(`Token received and processed for ${provider}. Backend call successful!`);
+            alert(`Token received and processed for ${provider}.`);
             // window.location.href = '/dashboard';
         }, 1500);
     }
 
-    // Event listeners
+    // Email login
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -122,21 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    googleBtn.addEventListener('click', () => {
-        // Trigger the Google Identity Services popup
-        google.accounts.id.requestCode();
-        // Note: For id_token auth, we use google.accounts.id.prompt() or the button render
-        // rendered button is often better, but here we trigger the browser's native flow
-        google.accounts.id.prompt();
-    });
-
+    // Facebook / GitHub placeholders
     facebookBtn.addEventListener('click', () => {
-        console.log('Facebook Login not fully implemented in this demo.');
+        console.log('Facebook Login not implemented.');
         onLoginSuccess('facebook', { name: 'Facebook User' });
     });
 
     githubBtn.addEventListener('click', () => {
-        console.log('GitHub Login not fully implemented in this demo.');
+        console.log('GitHub Login not implemented.');
         onLoginSuccess('github', { name: 'GitHub User' });
     });
 });
