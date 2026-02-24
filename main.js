@@ -71,10 +71,10 @@ function handleGoogleResponse(response) {
 }
 
 async function performSocialLogin(provider, idToken) {
-    const payload = { 
-        provider, 
-        idToken, 
-        device: CONFIG.DEVICE_DATA 
+    const payload = {
+        provider,
+        idToken,
+        device: CONFIG.DEVICE_DATA
     };
 
     showLoadingState();
@@ -82,7 +82,7 @@ async function performSocialLogin(provider, idToken) {
     try {
         const response = await fetch(CONFIG.API_URL, {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 'Accept': '*/*'
             },
