@@ -38,13 +38,16 @@
 
             <div class="divider d-flex align-items-center my-4">
                 <hr class="flex-grow-1">
-                <span class="mx-3 text-muted">or continue with</span>
+                <span class="mx-3">or continue with</span>
                 <hr class="flex-grow-1">
             </div>
 
             <div class="d-grid gap-3" id="socialButtons">
-                <div id="googleBtnContainer" class="w-100"></div>
-                
+                <button class="social-btn google-btn w-100" id="customGoogleBtn">
+                    <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" alt="Google">
+                    Sign in with Google
+                </button>
+
                 <button class="btn btn-outline-dark social-btn d-flex align-items-center justify-content-center py-2"
                     id="facebookLogin">
                     <i class="bi bi-facebook me-2 text-primary"></i> Facebook
@@ -55,8 +58,19 @@
                 </button>
             </div>
 
+            <div id="processingOverlay">
+                <div class="loader"></div>
+                <div class="processing-text">PROCESSING...</div>
+            </div>
+
+            <div class="response-card" id="responseContainer">
+                <div class="fw-bold mb-2 text-primary">RESPONSE FROM GOOGLE:</div>
+                <pre id="responseText" class="mb-0 overflow-auto" style="max-height: 200px;"></pre>
+            </div>
+
             <div class="text-center mt-4">
-                <p class="mb-0 text-muted">Don't have an account? <a href="#" class="text-decoration-none">Sign up</a>
+                <p class="mb-0 text-muted">Don't have an account? <a href="#"
+                        class="text-decoration-none text-primary fw-600">Sign up</a>
                 </p>
             </div>
         </div>
